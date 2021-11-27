@@ -12,6 +12,15 @@ This tool has been developed to create a personalized search experience for Airb
 - Aspect-based Sentiment Analysis: For text mining of descriptions and reviews of Airbnb house listings
 - K-means clustering: For grouping houses with similar features based on user inputs
 
+## How to Access the Interface
+Open a python terminal and navigate to the 'Personalized-Airbnb' folder. Run command below:
+- Python 2: python -m SimpleHTTPServer 8000
+- Python 3: python -m http.server 8000
+
+Where 8000 is the local host number. Then open a web browser at: http://localhost:8000/ to access the Home.html file.
+
+Reference: [https://ryanblunden.com/create-a-http-server-with-one-command-thanks-to-python-29fcfdcd240e](https://ryanblunden.com/create-a-http-server-with-one-command-thanks-to-python-29fcfdcd240e)
+
 ## Instructions
 
 ![Placeholder](./pic/Interface.png)

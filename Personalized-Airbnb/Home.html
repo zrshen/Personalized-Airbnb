@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>leaflet-map-csv</title>
+  <title>Persoanlized-Airbnb-Booking-Assistant-Tool</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
 
@@ -1893,7 +1893,7 @@
                               for (var j in RC_name) {
                                     if (RC_name[j] == "Price"){row_ele += RC_name[j] + ' - $' + row[RC_name[j]] + '<br>'
                                                         }
-                                    else {row_ele += RC_name[j] + ' - ' + row[RC_name[j]] + '<br>'}}
+                                    else {row_ele += RC_name[j] + ' - ' + d3v5.format(".2f")(row[RC_name[j]]) + '<br>'}}
 
                               // Use one color if data points <4
                               var house_group = 0
@@ -1925,6 +1925,7 @@
 
                                                               //Push select data to Radar Chart
                                                               data_RC.push(data_map[i])
+                                                              updateRC()
                                                               });
 
                               // Show popout via mouse hang-over
@@ -2011,6 +2012,7 @@
                             .append('rect')
                             .attr("class", "house_ele")
                             .attr('stroke', 'blue')
+                            .attr('id', function (d) {return d.id})
                             .attr('x', 0)
                             .attr('y', function(d, i){return 150 * i})
                             .attr("width", 700 * wlength/1920)
@@ -2019,25 +2021,40 @@
                             .attr('stroke', 'grey')
                             .attr('fill', "#D7E2EA")
                             .on("click", function(d){
-                                d3.selectAll('rect').style("stroke",'grey')
-                                d3.selectAll('rect').style('stroke-width', 1)
-                                d3.select(this).style("stroke", 'red')
-                                d3.select(this).style('stroke-width',5)
-                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                    d3.selectAll('rect').style("stroke",'grey')
+                                    d3.selectAll('rect').style('stroke-width', 1)
+                                    d3.select(this).style("stroke", 'red')
+                                    d3.select(this).style('stroke-width',5)
+                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
                             .on("dblclick", function(d, i){
-                                                tempAlert("House " + d.id + " added to RadarChart", 3000)
-                                                data_RC.push(d)
-                                                //console.log(d)
-                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
-                                                });
+                                    tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                    data_RC.push(d)
+                                    updateRC()
+                                    //console.log(d)
+                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                    });
 
-                        var image = slides.enter()
-                                          .append('image')
-                                          .attr('x', 5)
-                                          .attr('y', function(d, i){return 10 + 150 * i})
-                                          .attr('width', 220* wlength/1920)
-                                          .attr('height', 140)
-                                          .attr("xlink:href", function(d){return d.image});
+                    var image = slides.enter()
+                            .append('image')
+                            .attr('x', 5)
+                            .attr('y', function(d, i){return 10 + 150 * i})
+                            .attr('width', 220* wlength/1920)
+                            .attr('height', 140)
+                            .attr("xlink:href", function(d){return d.image})
+                            .on("click", function(d){
+                                    d3.selectAll('rect').style("stroke",'grey')
+                                    d3.selectAll('rect').style('stroke-width', 1)
+                                    console.log(d)
+                                    d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                    d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                            .on("dblclick", function(d, i){
+                                    tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                    data_RC.push(d)
+                                    updateRC()
+                                    //console.log(d)
+                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                    });
 
                         var def = slides.enter()
                                         .append('defs')
@@ -2047,7 +2064,8 @@
                                         .attr('x', 5)
                                         .attr('y', function(d, i){return 150 * i})
                                         .attr('width', 220 * wlength/1920)
-                                        .attr('height', 140);
+                                        .attr('height', 140)
+
 
                         // Apply Title to list board
                         slides.enter()
@@ -2057,6 +2075,20 @@
                                 .attr("dy", ".35em")
                                 .style("text-anchor", "left")
                                 .text(function(d){return 'ID: ' + d.id + '  ' + d.Title.slice(0, 40)})
+                                .on("click", function(d){
+                                        d3.selectAll('rect').style("stroke",'grey')
+                                        d3.selectAll('rect').style('stroke-width', 1)
+                                        console.log(d)
+                                        d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                        d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                        map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                .on("dblclick", function(d, i){
+                                        tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                        data_RC.push(d)
+                                        updateRC()
+                                        //console.log(d)
+                                        map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                        });
 
                         for (j = 0; j < RC_name.length; j++){
 
@@ -2067,14 +2099,22 @@
                                         .attr("dy", ".35em")
                                         .style("text-anchor", "left")
                                         .text(function(d){return RC_name[j] + " : "+ d3v5.format(".2f")(d[RC_name[j]])})
+                                        .on("click", function(d){
+                                                d3.selectAll('rect').style("stroke",'grey')
+                                                d3.selectAll('rect').style('stroke-width', 1)
+                                                console.log(d)
+                                                d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                                d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                        .on("dblclick", function(d, i){
+                                                tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                                data_RC.push(d)
+                                                updateRC()
+                                                //console.log(d)
+                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                                });
                         }
 
-                        //slides.enter()
-                        //        .append("text")
-                        //        .attr("x", 250)
-                        //        .attr("y", function(d, i){return 30 + 150 * i})
-                        //        .attr("dy", ".35em")
-                        //        .text(function(d){return RC_name[0] + " : "+ d3v5.format(".2f")(d.d[RC_name[0]])})
 
                         image.attr("clip-path", function(d, i){return "url(#clip" + i + ")"});
 
@@ -2098,6 +2138,7 @@
                                 .append('rect')
                                 .attr("class", "house_ele")
                                 .attr('stroke', 'blue')
+                                .attr('id', function (d) {return d.id})
                                 .attr('x', 0)
                                 .attr('y', function(d, i){return 150 * i})
                                 .attr("width", 700 * wlength/1920)
@@ -2110,12 +2151,13 @@
                                     d3.selectAll('rect').style('stroke-width', 1)
                                     d3.select(this).style("stroke", 'red')
                                     d3.select(this).style('stroke-width',5)
-                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 15)})
+                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
                                 .on("dblclick", function(d, i){
                                                 tempAlert("House " + d.id + " added to RadarChart", 3000)
                                                 data_RC.push(d)
+                                                updateRC()
                                                 //console.log(d)
-                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 15)
+                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
                                                 });
 
                             var image = slides_new.enter()
@@ -2124,7 +2166,21 @@
                                               .attr('y', function(d, i){return 10 + 150 * i})
                                               .attr('width', 220 * wlength/1920)
                                               .attr('height', 140)
-                                              .attr("xlink:href", function(d){return d.image});
+                                              .attr("xlink:href", function(d){return d.image})
+                                              .on("click", function(d){
+                                                    d3.selectAll('rect').style("stroke",'grey')
+                                                    d3.selectAll('rect').style('stroke-width', 1)
+                                                    console.log(d)
+                                                    d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                                    d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                              .on("dblclick", function(d, i){
+                                                    tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                                    data_RC.push(d)
+                                                    updateRC()
+                                                    //console.log(d)
+                                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                                    });
 
                             var def = slides_new.enter()
                                             .append('defs')
@@ -2145,6 +2201,20 @@
                                     .attr("dy", ".35em")
                                     .style("text-anchor", "left")
                                     .text(function(d){return 'ID: ' + d.id + '  ' + d.Title.slice(0, 40)})
+                                    .on("click", function(d){
+                                            d3.selectAll('rect').style("stroke",'grey')
+                                            d3.selectAll('rect').style('stroke-width', 1)
+                                            console.log(d)
+                                            d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                            d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                            map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                    .on("dblclick", function(d, i){
+                                            tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                            data_RC.push(d)
+                                            updateRC()
+                                            //console.log(d)
+                                            map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                            });
 
                             // Apply Feature Scores to list board
                             for (j = 0; j < RC_name.length; j++){
@@ -2156,6 +2226,20 @@
                                             .attr("dy", ".35em")
                                             .style("text-anchor", "left")
                                             .text(function(d){return RC_name[j] + " : "+ d3v5.format(".2f")(d[RC_name[j]])})
+                                            .on("click", function(d){
+                                                d3.selectAll('rect').style("stroke",'grey')
+                                                d3.selectAll('rect').style('stroke-width', 1)
+                                                console.log(d)
+                                                d3.select("rect[id='"+ d.id + "']").style("stroke", 'red')
+                                                d3.select("rect[id='"+ d.id + "']").style('stroke-width',5)
+                                                map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)})
+                                            .on("dblclick", function(d, i){
+                                                    tempAlert("House " + d.id + " added to RadarChart", 3000)
+                                                    data_RC.push(d)
+                                                    updateRC()
+                                                    //console.log(d)
+                                                    map.setView(new L.LatLng(d.Latitude, d.Longitude), 18)
+                                                    });
                             }
 
                             image.attr("clip-path", function(d, i){return "url(#clip" + i + ")"});

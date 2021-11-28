@@ -71,8 +71,10 @@ The tool interface has four main sections:
 
 2. Features selected in the Radar Chart Features list will be shown on the Radar Chart (plus three default features Price, Rating, and Cleanliness).
 
-3. Clicking on the Update Radar Chart button will update the Radar Chart based on inputs added from the Sort List Section and the Map Section.
+3. Double-clicking house/house icons in the Sort List Section and Map Section will add house features into Radar Chart for comparison.
 
-4. Clicking on the Clear Radar Chart button will clear all previous houses added.
+4. Clicking on the Update Radar Chart button will update Radar Chart for any changing Radar Chart Features Selected.
 
-5. Clicking on the cross icons before each house id will turn it into a circle and hide the related house information on the Radar Chart.
+5. Clicking on the Clear Radar Chart button will clear all previous houses added.
+
+6. Clicking on the cross icons before each house id will turn it into a circle and hide the related house information on the Radar Chart.
